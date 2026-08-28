@@ -66,7 +66,17 @@ RUN groupadd --gid ${USER_GID} ${USERNAME} \
     && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} \
     && chmod 0440 /etc/sudoers.d/${USERNAME}
 
+# --- Dotfiles: baked into the image from ./dotfiles/, seeded into $HOME at
+# --- container start (see entrypoint.sh) rather than COPY'd directly into
+# --- /home/${USERNAME}, since that path is a named volume and would shadow
+# --- anything placed there at build time.
+COPY dotfiles/ /opt/dotfiles-skel/
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chown -R ${USER_UID}:${USER_GID} /opt/dotfiles-skel \
+    && chmod +x /usr/local/bin/entrypoint.sh
+
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}/yocto
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash"]
