@@ -1,0 +1,4 @@
+[submodule "build-srv-env/dotfiles/.config/nvim"]
+	path = build-srv-env/dotfiles/.config/nvim
+	url = git@github.com:teslafields/nvim-basic-ide.git
+	branch = v0.12.4-headless
