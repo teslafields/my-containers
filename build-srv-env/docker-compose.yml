@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
       args:
         USERNAME: ${USERNAME:-builder}
-        USER_UID: ${UID:-1000}
-        USER_GID: ${GID:-1000}
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
         DOCKER_GID: ${DOCKER_GID:-999}
     image: yocto-dev:latest
     container_name: yocto-dev

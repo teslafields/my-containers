@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
       args:
         USERNAME: ${USERNAME:-builder}
-        USER_UID: ${UID:-1000}
-        USER_GID: ${GID:-1000}
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
         # Not used for socket auth here (rootless Podman owns the socket by
         # UID, not a group) but the Dockerfile still expects the arg.
         DOCKER_GID: ${DOCKER_GID:-999}
@@ -29,6 +29,7 @@ services:
     environment:
       - TERM=xterm-256color
       - DOCKER_HOST=unix:///var/run/docker.sock
+      - YOCTO_DEV=1
     shm_size: "120gb"
     # Needed for strace/gdb to attach, and helps perf work inside a container.
     cap_add:
