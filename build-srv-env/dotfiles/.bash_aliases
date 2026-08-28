@@ -99,3 +99,5 @@ set_ps1() {
 kill_from_list() {
     pgrep -a $1 | fzf | awk '{print $1}' | xargs kill
 }
+
+PROMPT_COMMAND="set_ps1"

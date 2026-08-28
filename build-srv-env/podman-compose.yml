@@ -30,7 +30,6 @@ services:
       - TERM=xterm-256color
       - DOCKER_HOST=unix:///var/run/docker.sock
       - YOCTO_DEV=1
-      - PROMPT_COMMAND="set_ps1"
     shm_size: "120gb"
     # Needed for strace/gdb to attach, and helps perf work inside a container.
     cap_add:
