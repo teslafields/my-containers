@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     lz4 procps mesa-common-dev libsdl1.2-dev \
     ca-certificates curl sudo vim nano less tree bash-completion \
     openssh-client rsync screen tmux \
-    ripgrep fd-find bat strace \
+    ripgrep fd-find bat strace xxd \
     linux-tools-common linux-tools-generic \
     docker.io \
     dnf dnf-plugins-core \
