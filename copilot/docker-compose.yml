@@ -1,0 +1,21 @@
+# compose.yml
+services:
+  copilot:
+    build:
+      context: .
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        USER_NAME: ${USER:-developer}
+        GROUP_NAME: ${USER:-developer}
+    image: copilot-image:latest
+    container_name: copilot
+    stdin_open: true
+    tty: true
+    network_mode: host
+    hostname: copilot
+    volumes:
+      # - ${HOME}/.config/github-copilot:/home/${USER}/.config/github-copilot:Z 
+      - ${HOME}/.copilot:/home/${USER}/.copilot:Z 
+      - ${PWD}:/home/${USER}/app:Z
+    working_dir: /home/${USER}/app

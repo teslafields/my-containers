@@ -1,0 +1,45 @@
+services:
+  yocto-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USERNAME: ${USERNAME:-builder}
+        USER_UID: ${UID:-1000}
+        USER_GID: ${GID:-1000}
+        # Not used for socket auth here (rootless Podman owns the socket by
+        # UID, not a group) but the Dockerfile still expects the arg.
+        DOCKER_GID: ${DOCKER_GID:-999}
+    image: yocto-dev:latest
+    container_name: yocto-dev
+    hostname: yocto-dev
+    stdin_open: true
+    tty: true
+    volumes:
+      # Project sources, build dirs, downloads, sstate-cache: all live on the host.
+      - ./yocto-work:/home/${USERNAME:-builder}/yocto
+      # Persist shell/bash history and any dotfile tweaks across container recreations.
+      - yocto-home:/home/${USERNAME:-builder}
+      # Rootless Podman's API socket is Docker-API compatible, so the same
+      # `docker` CLI installed in the image works against it unmodified.
+      # Confirmed on this server: the socket is owned by your own UID (no
+      # root/group involved), so the container's `builder` user (matching
+      # USER_UID) can use it directly -- no sudo, no group needed.
+      - ${XDG_RUNTIME_DIR}/podman/podman.sock:/var/run/docker.sock
+    environment:
+      - TERM=xterm-256color
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    shm_size: "120gb"
+    # Needed for strace/gdb to attach, and helps perf work inside a container.
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    # Uncomment if you hit "too many open files" during builds:
+    # ulimits:
+    #   nofile:
+    #     soft: 100000
+    #     hard: 100000
+
+volumes:
+  yocto-home:
