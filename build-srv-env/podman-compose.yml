@@ -34,8 +34,12 @@ services:
     # Needed for strace/gdb to attach, and helps perf work inside a container.
     cap_add:
       - SYS_PTRACE
+      - NET_ADMIN
     security_opt:
       - seccomp:unconfined
+    devices:
+      - /dev/net/tun:/dev/net/tun
+      - /dev/kvm:/dev/kvm
     # Uncomment if you hit "too many open files" during builds:
     # ulimits:
     #   nofile:
