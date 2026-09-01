@@ -4,9 +4,9 @@ Build the container using:
 
 ```text
 podman compose \
-    -f <path to podman-compose.yml> \
+    -f ./build-srv-env/podman-compose.yml \
     build \
-    --build-arg USERNAME=<username> \
+    --build-arg USERNAME=$USER \
     --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) \
     --build-arg DOCKER_GID=$(getent group docker | cut -d: -f 3)
 ```
