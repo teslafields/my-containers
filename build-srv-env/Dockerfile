@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     chrpath socat cpio python3 python3-pip python3-pexpect python3-venv \
     xz-utils debianutils iputils-ping python3-git python3-jinja2 \
     python3-subunit zstd liblz4-tool file locales libacl1 \
-    lz4 procps mesa-common-dev libsdl1.2-dev \
+    lz4 procps mesa-common-dev libsdl1.2-dev iproute2 \
     ca-certificates curl sudo vim nano less tree bash-completion \
     openssh-client rsync screen tmux \
     ripgrep fd-find bat strace xxd \
@@ -77,6 +77,9 @@ RUN chown -R ${USER_UID}:${USER_GID} /opt/dotfiles-skel \
 
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}/yocto
+
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+RUN cp -ra ~/.bashrc ~/.fzf /opt/dotfiles-skel
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash"]
