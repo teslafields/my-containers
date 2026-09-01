@@ -14,7 +14,7 @@ podman compose \
 And start using it:
 
 ```text
-podman compose up -d && podman exec yocto-dev bash # or
+podman compose up -d && podman exec -it yocto-dev bash # or
 podman compose run yocto-dev
 ```
 

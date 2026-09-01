@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     && add-apt-repository -y universe \
     && apt-get update && apt-get install -y --no-install-recommends \
     gawk wget git git-lfs diffstat unzip texinfo gcc g++ build-essential \
-    chrpath socat cpio python3 python3-pip python3-pexpect \
+    chrpath socat cpio python3 python3-pip python3-pexpect python3-venv \
     xz-utils debianutils iputils-ping python3-git python3-jinja2 \
     python3-subunit zstd liblz4-tool file locales libacl1 \
     lz4 procps mesa-common-dev libsdl1.2-dev \

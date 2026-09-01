@@ -17,7 +17,7 @@ services:
     tty: true
     volumes:
       # Project sources, build dirs, downloads, sstate-cache: all live on the host.
-      - ./yocto-work:/home/${USERNAME:-builder}/yocto
+      - ${HOME}/yocto-work:/home/${USERNAME:-builder}/yocto
       # Persist shell/bash history and any dotfile tweaks across container recreations.
       - yocto-home:/home/${USERNAME:-builder}
       # Rootless Podman's API socket is Docker-API compatible, so the same
