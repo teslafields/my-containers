@@ -53,7 +53,7 @@ RUN curl -fsSL -o /tmp/nvim-linux-x86_64.tar.gz \
     && echo "${NVIM_SHA256}  /tmp/nvim-linux-x86_64.tar.gz" | sha256sum -c - \
     && tar -C /opt -xzf /tmp/nvim-linux-x86_64.tar.gz \
     && mv /opt/nvim-linux-x86_64 /opt/nvim \
-    && ln -sf /opt/nvim/bin/nvim /usr/local/bin/nvim \
+    && ln -sf /opt/nvim/bin/nvim /usr/bin/nvim \
     && rm /tmp/nvim-linux-x86_64.tar.gz
 
 ENV LANG=en_US.UTF-8 \
@@ -78,7 +78,7 @@ RUN chown -R ${USER_UID}:${USER_GID} /opt/dotfiles-skel \
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}/yocto
 
-RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all
 RUN cp -ra ~/.bashrc ~/.fzf /opt/dotfiles-skel
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
