@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     lz4 procps mesa-common-dev libsdl1.2-dev iproute2 \
     ca-certificates curl sudo vim nano less tree bash-completion \
     openssh-client rsync screen tmux \
-    ripgrep fd-find bat strace xxd \
+    ripgrep fd-find bat strace xxd jq \
     linux-tools-common linux-tools-generic \
     docker.io \
     dnf dnf-plugins-core \
@@ -78,8 +78,12 @@ RUN chown -R ${USER_UID}:${USER_GID} /opt/dotfiles-skel \
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}/yocto
 
+# Install FZF
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all
 RUN cp -ra ~/.bashrc ~/.fzf /opt/dotfiles-skel
+
+# Install Rust
+RUN curl -ssL --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash"]
