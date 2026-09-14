@@ -33,3 +33,10 @@ podman compose build && podman compose up -d --force-recreate
 ```
 (existing files in the volume are left untouched; only newly added ones are copied in)
 
+## Bitbake quick build
+
+Follow the link: https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html
+
+```text
+bitbake-setup init --non-interactive poky-master poky-with-sstate distro/poky machine/qemux86-64
+```
