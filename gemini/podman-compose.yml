@@ -1,0 +1,26 @@
+# compose.yml
+services:
+  gemini:
+    build:
+      context: .
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        USER_NAME: ${USERNAME:-developer}
+        GROUP_NAME: ${USERNAME:-developer}
+    image: gemini-image:latest
+    container_name: gemini
+    stdin_open: true
+    tty: true
+    environment:
+      - TERM=xterm-256color
+    network_mode: host
+    userns_mode: keep-id
+    hostname: gemini
+    volumes:
+      - ${HOME}/.gemini:/home/${USERNAME:-developer}/.gemini:Z
+      - ${PWD}:/home/${USERNAME:-developer}/app:Z
+    working_dir: /home/${USERNAME:-developer}/app
+
+volumes:
+  agent-home:
