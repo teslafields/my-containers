@@ -10,7 +10,7 @@ ARG GID
 ARG USER_NAME
 ARG GROUP_NAME
 
-ENV HOME_DIR /home/$USER_NAME
+ENV HOME_DIR=/home/$USER_NAME
 
 # Install system dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
@@ -42,10 +42,10 @@ RUN if getent passwd ${UID} >/dev/null 2>&1; then \
 RUN addgroup --gid $GID $GROUP_NAME
 RUN adduser --home $HOME_DIR --shell /bin/bash --uid $UID --gid $GID $USER_NAME
 
+# Create directories including Antigravity CLI config target
 RUN mkdir -p  \
     $HOME_DIR/.bin \
-    $HOME_DIR/.npm-global \
-    $HOME_DIR/.gemini \
+    $HOME_DIR/.gemini/antigravity-cli \
     $HOME_DIR/.ssh && \
     chmod -R 700 $HOME_DIR/.ssh
 
@@ -60,21 +60,20 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # Switch to non-root user
 USER $USER_NAME
 
-RUN npm config set prefix "$HOME_DIR/.npm-global" \
-    && npm install -g @google/gemini-cli
+# Install antigravity-cli
+RUN curl -fsSL https://antigravity.google/cli/install.sh | bash
+RUN echo 'export PATH="~/.local/bin:$PATH"' >> ~/.bashrc
 
-# Copy template and static files directly to the user's directory
-COPY config.json.tpl .gemini/config.json.tpl
+# Copy template and static context files
+COPY config.json.tpl .gemini/antigravity-cli/settings.json.tpl
 COPY GEMINI.md GEMINI.md
 
-# Substitute placeholder and remove the template
-RUN sed -i "s|__HOME_DIR__|${HOME_DIR}|g" .gemini/config.json.tpl && \
-    mv .gemini/config.json.tpl .gemini/config.json
+# Substitute placeholder and place settings.json in Antigravity's expected path
+RUN sed -i "s|__HOME_DIR__|${HOME_DIR}|g" .gemini/antigravity-cli/settings.json.tpl && \
+    mv .gemini/antigravity-cli/settings.json.tpl .gemini/antigravity-cli/settings.json
 
-RUN echo "export PATH=~/.npm-global/bin:\$PATH" >> .bashrc
-
-# Set environment
+# Expose global NPM binaries to PATH across both login shells and exec mode
 ENV SHELL=/bin/bash
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["~/.npm-global/bin/gemini"]
+CMD ["~/.local/bin/agy"]
