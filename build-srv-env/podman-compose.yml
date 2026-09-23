@@ -41,7 +41,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
       - /dev/kvm:/dev/kvm
-    userns_mode: "host"
+    userns_mode: keep-id
     pids_limit: -1
     ulimits:
       nofile:

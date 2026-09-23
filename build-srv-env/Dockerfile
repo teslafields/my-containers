@@ -25,12 +25,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     openssh-client rsync screen tmux \
     ripgrep fd-find bat strace xxd jq \
     linux-tools-common linux-tools-generic \
-    docker.io \
+    docker.io man \
     dnf dnf-plugins-core \
     && locale-gen en_US.UTF-8 \
     && ln -sf "$(command -v fdfind)" /usr/local/bin/fd \
     && ln -sf "$(command -v batcat)" /usr/local/bin/bat \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && echo "y" | unminimize
 
 # --- Reconcile the "docker" group (created by the docker.io package) with ---
 # --- the host's docker.sock GID, so the non-root user can use it directly ---
