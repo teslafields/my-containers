@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
     openssh-client rsync screen tmux \
     ripgrep fd-find bat strace xxd jq \
     linux-tools-common linux-tools-generic \
-    docker.io man \
+    docker.io man htop \
     dnf dnf-plugins-core \
     && locale-gen en_US.UTF-8 \
     && ln -sf "$(command -v fdfind)" /usr/local/bin/fd \
