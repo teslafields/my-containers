@@ -20,12 +20,16 @@ services:
       - ${HOME}/yocto-work:/home/${USERNAME:-builder}/yocto
       # Persist shell/bash history and any dotfile tweaks across container recreations.
       - yocto-home:/home/${USERNAME:-builder}
+      # bindmount the yocto artifacts needed by PREMIRRORS
+      - /mnt:/mnt
       # Rootless Podman's API socket is Docker-API compatible, so the same
       # `docker` CLI installed in the image works against it unmodified.
       # Confirmed on this server: the socket is owned by your own UID (no
       # root/group involved), so the container's `builder` user (matching
       # USER_UID) can use it directly -- no sudo, no group needed.
       - ${XDG_RUNTIME_DIR}/podman/podman.sock:/var/run/docker.sock
+      # nvim clipboard integration via Unix socket
+      - /tmp/nvim-clip:/tmp/nvim-clip
     environment:
       - TERM=xterm-256color
       - DOCKER_HOST=unix:///var/run/docker.sock
